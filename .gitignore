@@ -1,0 +1,24 @@
+var form = $('#upload-form');
+form.on('submit',function(){
+  //此处动态插入iframe元素 
+  var send = Math.floor(Math.random() * 1000);
+  var id = "uploader-frame-" + send;
+  var callback = "uploader-cb-" + send;
+  var iframe = $('<iframe id = " '+id+' " name = " '+id+' " style = "display:none"> ');
+  var url = form.attr('action');
+  form.attr('target',id).append(iframe).attr('action',url + '?iframe =' + callback);
+  
+  
+});
+//upload.php callback
+<script type="text/javascript">
+     window.top.window['callback'](data);
+</script>
+
+//web is function
+window[callback] = function (data){
+  console.log('received callback:', data);
+  iframe.remove() //removing iframe
+  form.removeAttr('action',url);
+  window[callback] = undefined; //removing callback
+}
